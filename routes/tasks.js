@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const validateTask = require('../middleware/validate');
 const router = express.Router();
 
 const DB_PATH = path.join(__dirname, '..', 'db.json');
@@ -24,7 +25,7 @@ router.get('/:id', (req, res) => {
   res.json(task);
 });
 
-router.post('/', (req, res) => {
+router.post('/', validateTask, (req, res) => {
   const db = readDB();
   const newTask = {
     id: Date.now().toString(),
@@ -37,7 +38,7 @@ router.post('/', (req, res) => {
   res.status(201).json(newTask);
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateTask, (req, res) => {
   const db = readDB();
   const task = db.tasks.find(t => t.id === req.params.id);
   if (!task) return res.status(404).json({ error: 'Tarea no encontrada' });
