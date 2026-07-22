@@ -43,7 +43,9 @@ router.post('/', validateTask, (req, res) => {
     id: Date.now().toString(),
     title: req.body.title,
     completed: false,
-    createdAt: new Date().toString()
+    // FIX: se usaba new Date().toString() (formato dependiente del locale,
+    // dificil de parsear). Se corrige a formato ISO 8601 estandar.
+    createdAt: new Date().toISOString()
   };
   db.tasks.push(newTask);
   writeDB(db);
