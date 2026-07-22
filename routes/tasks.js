@@ -15,7 +15,19 @@ function writeDB(data) {
 
 router.get('/', (req, res) => {
   const db = readDB();
-  res.json(db.tasks);
+  let tasks = db.tasks;
+
+  if (req.query.completed !== undefined) {
+    const wanted = req.query.completed === 'true';
+    tasks = tasks.filter(t => t.completed === wanted);
+  }
+
+  if (req.query.search) {
+    const term = req.query.search.toLowerCase();
+    tasks = tasks.filter(t => t.title.toLowerCase().includes(term));
+  }
+
+  res.json(tasks);
 });
 
 router.get('/:id', (req, res) => {
