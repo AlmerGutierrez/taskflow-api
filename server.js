@@ -8,6 +8,9 @@ app.get('/', (req, res) => {
   res.json({ status: 'ok', message: 'TaskFlow API funcionando' });
 });
 
+const tasksRouter = require('./routes/tasks');
+app.use('/tasks', tasksRouter);
+
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en puerto ${PORT}`);
 });
